@@ -46,3 +46,14 @@ void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto){
      }
 
 }
+
+// Função para ler os dados de um arquivo e adicioná-los a um tabuleiro.
+void leituraArquivo(FILE* arquivo, long int n){
+
+     
+
+     for (int i = 0; i < n; i++) {
+          fscanf(arquivo, "%ld", &tabuleiro[i]);
+     }
+
+}

@@ -9,4 +9,6 @@ double tempoUsuario, double tempoNoSistema);
 
 void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto);
 
+void leituraArquivo(FILE* arquivo, long int n);
+
 #endif
