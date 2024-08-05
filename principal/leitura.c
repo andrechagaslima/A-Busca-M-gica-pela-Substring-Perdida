@@ -7,7 +7,7 @@
 void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 
      //Verificar se a estratégia foi fornecida
-     if(estrategia[0] != 'D' && estrategia[0] != 'A' || strlen(estrategia) > 1){
+     if(estrategia[0] != '1' && estrategia[0] != '2' || strlen(estrategia) > 1){
           printf("Selecione uma estratégia valida.\n");
           exit(EXIT_FAILURE);
      }
@@ -20,13 +20,21 @@ void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 }
 
 // Função para imprimir dados de tempo de execução e distâncias calculadas em um arquivo de saída.
-void imprimirSaidas(FILE *arquivoSaida, long int resultado,
+void imprimirSaidas(FILE *arquivoSaida, int *resultado, int qte_restultados,
 double tempoUsuario, double tempoNoSistema){
 
      printf("Tempo de Usuário: %.6lf segundos.\n", tempoUsuario);
      printf("Algoritmo ficou %.6lf segundos no sistema.\n", tempoNoSistema);
-     fprintf(arquivoSaida, "%ld", resultado);
-
+     
+     for(int i=0; i<qte_restultados; i++){  
+          if(resultado[i] == 1){   
+               fprintf(arquivoSaida, "Sim\n");
+          } else if(resultado[i] == 0){
+               fprintf(arquivoSaida, "Não\n");
+          } else {
+               fprintf(arquivoSaida, "Erro\n");
+          }
+     }
 }
 
 // Função para verificar se um arquivo foi aberto corretamente.

@@ -13,7 +13,6 @@ int main(int argc, char *argv[]) {
      char *outputFile = "saida.txt";
      struct rusage start, end; //Usados para calcular o tempo (getrusage)
      struct timeval inicio, fim; //Usados para calcular o tempo (gettimeofday)
-     long int resultado = 0;
 
      //Recebe o algoritmo e o nome do arquivo de entrada
      algoritmo = argv[1];
@@ -49,7 +48,9 @@ int main(int argc, char *argv[]) {
      double tempoNoSistema = (end.ru_stime.tv_sec - start.ru_stime.tv_sec) 
           + 1e-6 * (end.ru_stime.tv_usec - start.ru_stime.tv_usec);
 
-     imprimirSaidas(arquivoSaida, resultado, tempoUsuario, tempoNoSistema);
+     int resultado[3] = {0, 1, 0};
+
+     imprimirSaidas(arquivoSaida, resultado, 3 ,tempoUsuario, tempoNoSistema);
      
      //Finalizações
 
