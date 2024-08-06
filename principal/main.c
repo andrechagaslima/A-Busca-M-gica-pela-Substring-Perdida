@@ -36,8 +36,6 @@ int main(int argc, char *argv[]) {
      FILE *arquivoSaida = fopen(outputFile, "w");
      testaAberturaArquivo(arquivoSaida, outputFile);
 
-     
-
      getrusage(RUSAGE_SELF, &start);
      gettimeofday(&inicio, NULL);
 
