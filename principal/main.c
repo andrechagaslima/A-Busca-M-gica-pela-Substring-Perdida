@@ -13,6 +13,10 @@ int main(int argc, char *argv[]) {
      char *outputFile = "saida.txt";
      struct rusage start, end; //Usados para calcular o tempo (getrusage)
      struct timeval inicio, fim; //Usados para calcular o tempo (gettimeofday)
+     char *text = NULL;
+     char *pattern = NULL;
+     Query *queries = NULL;
+     int num_queries;
 
      //Recebe o algoritmo e o nome do arquivo de entrada
      algoritmo = argv[1];
@@ -23,6 +27,10 @@ int main(int argc, char *argv[]) {
      // Abrir o arquivo de entrada
      FILE *arquivo = fopen(inputFile, "r");
      testaAberturaArquivo(arquivo, inputFile);
+
+     leituraArquivo(arquivo, &text, &pattern, &queries, &num_queries);
+
+     printf("%s\n%s\n", text, pattern);
 
      // Abrir o arquivo de saída
      FILE *arquivoSaida = fopen(outputFile, "w");

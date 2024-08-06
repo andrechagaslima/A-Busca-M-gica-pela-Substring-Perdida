@@ -47,13 +47,99 @@ void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto){
 
 }
 
+ssize_t read_line(FILE *file, char **line, size_t *len) {
+    ssize_t read;
+    read = getline(line, len, file);
+    if (read == -1) {
+        if (feof(file)) {
+            return 0; // Fim do arquivo
+        } else {
+            perror("Erro ao ler a linha do arquivo");
+            exit(EXIT_FAILURE);
+        }
+    }
+    // Remover nova linha, se presente
+    if ((*line)[read - 1] == '\n') {
+        (*line)[read - 1] = '\0';
+        read--;
+    }
+    return read;
+}
+
 // Função para ler os dados de um arquivo e adicioná-los a um tabuleiro.
-void leituraArquivo(FILE* arquivo, long int n){
+void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, int *num_queries) {
+    size_t len = 0;
+    ssize_t read;
+    char *line = NULL;
 
-     
+    // Ler a primeira linha do arquivo (Texto Principal)
+    read = read_line(file, &line, &len);
+    if (read == 0) {
+        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        exit(EXIT_FAILURE);
+    }
+    // Alocar memória e copiar o texto principal
+    *text = (char *)malloc((read + 1) * sizeof(char));
+    if (*text == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para o texto.\n");
+        free(line);
+        exit(EXIT_FAILURE);
+    }
+    strncpy(*text, line, read);
+    (*text)[read] = '\0';
 
-     for (int i = 0; i < n; i++) {
-          fscanf(arquivo, "%ld", &tabuleiro[i]);
-     }
+    // Ler a segunda linha do arquivo (Padrão)
+    read = read_line(file, &line, &len);
+    if (read == 0) {
+        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        free(*text);
+        exit(EXIT_FAILURE);
+    }
+    // Alocar memória e copiar o padrão
+    *pattern = (char *)malloc((read + 1) * sizeof(char));
+    if (*pattern == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para o padrão.\n");
+        free(*text);
+        free(line);
+        exit(EXIT_FAILURE);
+    }
+    strncpy(*pattern, line, read);
+    (*pattern)[read] = '\0';
 
+    // Ler a terceira linha do arquivo (Número de consultas)
+    read = read_line(file, &line, &len);
+    if (read == 0) {
+        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        free(*text);
+        free(*pattern);
+        free(line);
+        exit(EXIT_FAILURE);
+    }
+    *num_queries = atoi(line);
+
+    // Alocação dinâmica para as consultas
+    *queries = (Query *)malloc(*num_queries * sizeof(Query));
+    if (*queries == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para as consultas.\n");
+        free(*text);
+        free(*pattern);
+        free(line);
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura dos intervalos de consultas
+    for (int i = 0; i < *num_queries; i++) {
+        read = read_line(file, &line, &len);
+        if (read == 0) {
+            fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+            free(*text);
+            free(*pattern);
+            free(*queries);
+            free(line);
+            exit(EXIT_FAILURE);
+        }
+        sscanf(line, "%d %d", &(*queries)[i].start, &(*queries)[i].end);
+    }
+
+    free(line);
 }
