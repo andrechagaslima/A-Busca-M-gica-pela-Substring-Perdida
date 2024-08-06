@@ -34,9 +34,9 @@ int main(int argc, char *argv[]) {
      gettimeofday(&inicio, NULL);
 
      //Escolha do Algoritmo
-     if(algoritmo[0] == '1') {
+     if(algoritmo[0] == 'K') {
 
-     } else if (algoritmo[0] == '2') {
+     } else if (algoritmo[0] == 'B') {
 
      }
 

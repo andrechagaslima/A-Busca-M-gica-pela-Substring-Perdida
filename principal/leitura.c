@@ -7,7 +7,7 @@
 void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 
      //Verificar se a estratégia foi fornecida
-     if(estrategia[0] != '1' && estrategia[0] != '2' || strlen(estrategia) > 1){
+     if(estrategia[0] != 'K' && estrategia[0] != 'B' || strlen(estrategia) > 1){
           printf("Selecione uma estratégia valida.\n");
           exit(EXIT_FAILURE);
      }
