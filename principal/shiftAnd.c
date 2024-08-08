@@ -2,20 +2,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "shiftAnd.h"
 
 // Preprocessamento da máscara para cada caractere do alfabeto
 void preprocessShiftAnd(char *pattern, int m, bool **M) {
     for (int i = 0; i < 256; i++) {
         for (int j = 0; j < m; j++) {
-            M[i][j] = true;  
+            M[i][j] = false;  
         }
     }
     for (int j = 0; j < m; j++) {
-        M[(unsigned char)pattern[j]][j] = false;  
+        M[(unsigned char)pattern[j]][j] = true;  
     }
 }
 
-// Função para deslocar o vetor de bits para a direita manualmente
+// Função para deslocar o vetor de bits para a direita
 void shiftRight(bool *R, int m) {
     for (int j = m - 1; j > 0; j--) {
         R[j] = R[j - 1];
@@ -33,7 +34,7 @@ void shiftAndSearch(char *text, int n, char *pattern, int m) {
 
     bool *R = (bool *)malloc(m * sizeof(bool));
     for (int j = 0; j < m; j++) {
-        R[j] = true;
+        R[j] = false;
     }
 
     for (int i = 0; i < n; i++) {
@@ -41,7 +42,7 @@ void shiftAndSearch(char *text, int n, char *pattern, int m) {
         for (int j = 0; j < m; j++) {
             R[j] = R[j] && M[(unsigned char)text[i]][j];
         }
-        if (!R[m - 1]) {
+        if (R[m - 1]) {
             printf("Casamento na posição: %d\n", i - m + 2);
         }
     }

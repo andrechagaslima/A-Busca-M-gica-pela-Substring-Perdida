@@ -5,6 +5,7 @@
 #include <sys/time.h>
 #include <string.h>
 #include "leitura.h"
+#include "shiftAnd.h"
 
 int main(int argc, char *argv[]) {
     
@@ -30,7 +31,12 @@ int main(int argc, char *argv[]) {
 
      leituraArquivo(arquivo, &text, &pattern, &queries, &num_queries);
 
-     printf("%s\n%s\n", text, pattern);
+     size_t n = strlen(text) - 1;
+     size_t m = strlen(pattern) - 1;
+
+     printf("%ld\n%ld\n", n, m);
+
+     shiftAndSearch(text, n, pattern, m);
 
      // Abrir o arquivo de saída
      FILE *arquivoSaida = fopen(outputFile, "w");
