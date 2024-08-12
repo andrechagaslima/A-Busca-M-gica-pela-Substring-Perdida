@@ -36,7 +36,18 @@ int main(int argc, char *argv[]) {
 
      printf("%ld\n%ld\n", n, m);
 
-     shiftAndSearch(text, n, pattern, m);
+     for(int i = 0; i < num_queries; i++){
+          char *process_text = NULL;
+          int tam = queries[i].end - queries[i].start + 1;
+          process_text = (char *)malloc((tam + 1) * sizeof(char));
+          processQuery(&queries[i], text, process_text);
+          if(shiftAndSearch(process_text, n, pattern, m)){
+               printf("sim\n");
+          } else {
+               printf("nao\n");
+          }
+          free(process_text);
+     }
 
      // Abrir o arquivo de saída
      FILE *arquivoSaida = fopen(outputFile, "w");

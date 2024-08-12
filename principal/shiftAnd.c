@@ -25,7 +25,7 @@ void shiftRight(bool *R, int m) {
 }
 
 // Função para buscar o padrão no texto usando o algoritmo Shift-And
-void shiftAndSearch(char *text, int n, char *pattern, int m) {
+bool shiftAndSearch(char *text, int n, char *pattern, int m) {
     bool **M = (bool **)malloc(256 * sizeof(bool *));
     for (int i = 0; i < 256; i++) {
         M[i] = (bool *)malloc(m * sizeof(bool));
@@ -43,7 +43,12 @@ void shiftAndSearch(char *text, int n, char *pattern, int m) {
             R[j] = R[j] && M[(unsigned char)text[i]][j];
         }
         if (R[m - 1]) {
-            printf("Casamento na posição: %d\n", i - m + 2);
+            for (int i = 0; i < 256; i++) {
+                free(M[i]);
+            }
+            free(M);
+            free(R);
+            return true;
         }
     }
 
@@ -53,4 +58,5 @@ void shiftAndSearch(char *text, int n, char *pattern, int m) {
     }
     free(M);
     free(R);
+    return false;
 }

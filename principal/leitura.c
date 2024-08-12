@@ -143,3 +143,12 @@ void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, in
 
     free(line);
 }
+
+void processQuery(Query *query, char *text, char *process_text){
+    int count = 0;
+    for(int i = (query->start - 1); i < query->end; i++){
+        process_text[count] = text[i];
+        count++;
+    }
+    process_text[count] = '\0';
+}

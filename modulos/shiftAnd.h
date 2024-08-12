@@ -9,6 +9,6 @@ void preprocessShiftAnd(char *pattern, int m, bool **M);
 
 void shiftRight(bool *R, int m);
 
-void shiftAndSearch(char *text, int n, char *pattern, int m);
+bool shiftAndSearch(char *text, int n, char *pattern, int m);
 
 #endif

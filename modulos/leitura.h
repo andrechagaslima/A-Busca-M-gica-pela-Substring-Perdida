@@ -20,4 +20,6 @@ void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto);
 
 void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, int *num_queries);
 
+void processQuery(Query *query, char *text, char *process_text);
+
 #endif
