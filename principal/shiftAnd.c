@@ -2,61 +2,59 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "shiftAnd.h"
+#include <limits.h> 
+
+#define BITS_PER_WORD (sizeof(unsigned long) * CHAR_BIT)  // Define o número de bits por palavra
 
 // Preprocessamento da máscara para cada caractere do alfabeto
-void preprocessShiftAnd(char *pattern, int m, bool **M) {
+void preprocessShiftAnd(char *pattern, int m, unsigned long *M) {
     for (int i = 0; i < 256; i++) {
-        for (int j = 0; j < m; j++) {
-            M[i][j] = false;  
-        }
+        M[i] = 0;
     }
     for (int j = 0; j < m; j++) {
-        M[(unsigned char)pattern[j]][j] = true;  
+        M[(unsigned char)pattern[j]] |= (1UL << j);  
     }
-}
-
-// Função para deslocar o vetor de bits para a direita
-void shiftRight(bool *R, int m) {
-    for (int j = m - 1; j > 0; j--) {
-        R[j] = R[j - 1];
-    }
-    R[0] = true; 
 }
 
 // Função para buscar o padrão no texto usando o algoritmo Shift-And
 bool shiftAndSearch(char *text, int n, char *pattern, int m) {
-    bool **M = (bool **)malloc(256 * sizeof(bool *));
-    for (int i = 0; i < 256; i++) {
-        M[i] = (bool *)malloc(m * sizeof(bool));
+    if (m > BITS_PER_WORD) {
+        printf("Padrão muito longo para a implementação com uma única palavra. Considere dividir o padrão.\n");
+        return false;
     }
+
+    unsigned long *M = (unsigned long *)malloc(256 * sizeof(unsigned long));
+    if (M == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para M.\n");
+        return false;
+    }
+
     preprocessShiftAnd(pattern, m, M);
 
-    bool *R = (bool *)malloc(m * sizeof(bool));
-    for (int j = 0; j < m; j++) {
-        R[j] = false;
+    unsigned long *R = (unsigned long *)malloc(sizeof(unsigned long));
+    if (R == NULL) {
+        fprintf(stderr, "Erro ao alocar memória para R.\n");
+        free(M); 
+        return false;
     }
+    *R = 0;
 
     for (int i = 0; i < n; i++) {
-        shiftRight(R, m);
-        for (int j = 0; j < m; j++) {
-            R[j] = R[j] && M[(unsigned char)text[i]][j];
-        }
-        if (R[m - 1]) {
-            for (int i = 0; i < 256; i++) {
-                free(M[i]);
-            }
+        // Desloca o registro R para a direita e aplica a máscara do caractere atual do texto
+        *R = (*R << 1) | 1UL;
+        *R &= M[(unsigned char)text[i]];
+
+        // Verifica se o bit mais à esquerda está ativado, o que indica que o padrão foi encontrado
+        if (*R & (1UL << (m - 1))) {
             free(M);
             free(R);
-            return true;
+
+            return true;  // Padrão encontrado
         }
     }
 
-    // Liberação da memória alocada
-    for (int i = 0; i < 256; i++) {
-        free(M[i]);
-    }
     free(M);
     free(R);
-    return false;
+
+    return false;  // Padrão não encontrado
 }

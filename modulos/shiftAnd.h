@@ -5,9 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-void preprocessShiftAnd(char *pattern, int m, bool **M);
-
-void shiftRight(bool *R, int m);
+void preprocessShiftAnd(char *pattern, int m, unsigned long *M);
 
 bool shiftAndSearch(char *text, int n, char *pattern, int m);
 
