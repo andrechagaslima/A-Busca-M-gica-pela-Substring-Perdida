@@ -9,6 +9,7 @@ EXEC = tp3
 # Compilador e flags
 CC = gcc
 CFLAGS = -g -I$(HDR_DIR)
+LDFLAGS = -lm 
 
 # Define os arquivos fonte, objeto e cabeçalho
 SOURCES = $(wildcard $(SRC_DIR)/*.c)
@@ -20,7 +21,7 @@ all: $(EXEC)
 
 # Liga os arquivos objeto para criar um binário
 $(EXEC): $(OBJECTS)
-	$(CC) $^ -o $@
+	$(CC) $^ -o $@ $(LDFLAGS)
 
 # Compila cada arquivo fonte em um arquivo objeto
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)

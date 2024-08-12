@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <limits.h> 
+#include <math.h>
 
 #define BITS_PER_WORD (sizeof(unsigned long) * CHAR_BIT)  // Define o número de bits por palavra
 
@@ -18,10 +19,11 @@ void preprocessShiftAnd(char *pattern, int m, unsigned long *M) {
 
 // Função para buscar o padrão no texto usando o algoritmo Shift-And
 bool shiftAndSearch(char *text, int n, char *pattern, int m) {
-    if (m > BITS_PER_WORD) {
-        printf("Padrão muito longo para a implementação com uma única palavra. Considere dividir o padrão.\n");
+    if (m > n) {
+        printf("Padrão muito longo para a query.\n");
         return false;
     }
+    unsigned long numPatterns = (unsigned long)ceil((double)m/BITS_PER_WORD);
 
     unsigned long *M = (unsigned long *)malloc(256 * sizeof(unsigned long));
     if (M == NULL) {

@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
           int tam = queries[i].end - queries[i].start + 1;
           process_text = (char *)malloc((tam + 1) * sizeof(char));
           processQuery(&queries[i], text, process_text);
-          if(shiftAndSearch(process_text, n, pattern, m)){
+          if(shiftAndSearch(process_text, tam, pattern, m)){
                printf("sim\n");
           } else {
                printf("nao\n");
