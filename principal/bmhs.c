@@ -10,24 +10,28 @@ bool BMHS(char *text, int n, char *pattern, int m){
           d[j] = (m + 1);
      }
 
-     for(j = 1; j < m; j++){
+     for(j = 0; j < m; j++){
           d[(int)pattern[j]] = (m - j);
      }
          
      i = m;
 
      while(i <= n){
-
+          
           k = i - 1;
           j = m - 1;
-          while((text[k] == pattern[j]) && (j >= 0)){
+          while((j >= 0) && (text[k] == pattern[j])){
                k--;
                j--;
           }
           if(j < 0){
                return true;
+          } 
+          if(i == n){ 
+               i++; 
+          } else {
+               i = i + d[(int)text[i]];
           }
-          i = i + d[(int)text[i]];
      }
 
      return false;

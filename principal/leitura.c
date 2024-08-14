@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "leitura.h"
 
 //Verificar se os arquivos foram passados corretamente.
@@ -20,7 +21,7 @@ void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 }
 
 // Função para imprimir dados de tempo de execução e distâncias calculadas em um arquivo de saída.
-void imprimirSaidas(FILE *arquivoSaida, int *resultado, int qte_restultados,
+void imprimirSaidas(FILE *arquivoSaida, bool *resultado, int qte_restultados,
 double tempoUsuario, double tempoNoSistema){
 
      printf("Tempo de Usuário: %.6lf segundos.\n", tempoUsuario);

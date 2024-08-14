@@ -4,6 +4,7 @@
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <string.h>
+#include <stdbool.h>
 #include "leitura.h"
 #include "shiftAnd.h"
 #include "bmhs.h"
@@ -32,6 +33,8 @@ int main(int argc, char *argv[]) {
 
      leituraArquivo(arquivo, &text, &pattern, &queries, &num_queries);
 
+     bool *resultados = (bool *)malloc(num_queries * sizeof(bool));
+
      size_t n = strlen(text) - 1;
      size_t m = strlen(pattern) - 1;
 
@@ -43,32 +46,17 @@ int main(int argc, char *argv[]) {
      gettimeofday(&inicio, NULL);
 
      //Escolha do Algoritmo
-     if(algoritmo[0] == 'S') {
-          for(int i = 0; i < num_queries; i++){
-               char *process_text = NULL;
-               int tam = queries[i].end - queries[i].start + 1;
-               process_text = (char *)malloc((tam + 1) * sizeof(char));
-               processQuery(&queries[i], text, process_text);
-               if(shiftAndSearch(process_text, tam, pattern, m)){
-                    printf("sim\n");
-               } else {
-                    printf("nao\n");
-               }
-               free(process_text);
+     for(int i = 0; i < num_queries; i++){
+          char *process_text = NULL;
+          int tam = queries[i].end - queries[i].start + 1;
+          process_text = (char *)malloc((tam + 1) * sizeof(char));
+          processQuery(&queries[i], text, process_text);
+          if(algoritmo[0] == 'S'){
+               resultados[i] = shiftAndSearch(process_text, tam, pattern, m);
+          } else if(algoritmo[0] == 'B'){
+               resultados[i] = BMHS(process_text, tam, pattern, m);
           }
-     } else if (algoritmo[0] == 'B') {
-          for(int i = 0; i < num_queries; i++){
-               char *process_text = NULL;
-               int tam = queries[i].end - queries[i].start + 1;
-               process_text = (char *)malloc((tam + 1) * sizeof(char));
-               processQuery(&queries[i], text, process_text);
-               if(BMHS(process_text, tam, pattern, m)){
-                    printf("sim\n");
-               } else {
-                    printf("nao\n");
-               }
-               free(process_text);
-          }
+          free(process_text);
      }
 
      gettimeofday(&fim, NULL);
@@ -79,12 +67,14 @@ int main(int argc, char *argv[]) {
      double tempoNoSistema = (end.ru_stime.tv_sec - start.ru_stime.tv_sec) 
           + 1e-6 * (end.ru_stime.tv_usec - start.ru_stime.tv_usec);
 
-     int resultado[3] = {0, 1, 0};
-
-     imprimirSaidas(arquivoSaida, resultado, 3 ,tempoUsuario, tempoNoSistema);
+     imprimirSaidas(arquivoSaida, resultados, num_queries ,tempoUsuario, tempoNoSistema);
      
      //Finalizações
 
+     free(queries);
+     free(pattern);
+     free(text);
+     free(resultados);
      fclose(arquivo);
      fclose(arquivoSaida);
 
