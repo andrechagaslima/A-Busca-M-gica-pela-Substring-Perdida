@@ -6,6 +6,7 @@
 #include <string.h>
 #include "leitura.h"
 #include "shiftAnd.h"
+#include "bmhs.h"
 
 int main(int argc, char *argv[]) {
     
@@ -34,21 +35,6 @@ int main(int argc, char *argv[]) {
      size_t n = strlen(text) - 1;
      size_t m = strlen(pattern) - 1;
 
-     printf("%ld\n%ld\n", n, m);
-
-     for(int i = 0; i < num_queries; i++){
-          char *process_text = NULL;
-          int tam = queries[i].end - queries[i].start + 1;
-          process_text = (char *)malloc((tam + 1) * sizeof(char));
-          processQuery(&queries[i], text, process_text);
-          if(shiftAndSearch(process_text, tam, pattern, m)){
-               printf("sim\n");
-          } else {
-               printf("nao\n");
-          }
-          free(process_text);
-     }
-
      // Abrir o arquivo de saída
      FILE *arquivoSaida = fopen(outputFile, "w");
      testaAberturaArquivo(arquivoSaida, outputFile);
@@ -57,10 +43,32 @@ int main(int argc, char *argv[]) {
      gettimeofday(&inicio, NULL);
 
      //Escolha do Algoritmo
-     if(algoritmo[0] == 'K') {
-
+     if(algoritmo[0] == 'S') {
+          for(int i = 0; i < num_queries; i++){
+               char *process_text = NULL;
+               int tam = queries[i].end - queries[i].start + 1;
+               process_text = (char *)malloc((tam + 1) * sizeof(char));
+               processQuery(&queries[i], text, process_text);
+               if(shiftAndSearch(process_text, tam, pattern, m)){
+                    printf("sim\n");
+               } else {
+                    printf("nao\n");
+               }
+               free(process_text);
+          }
      } else if (algoritmo[0] == 'B') {
-
+          for(int i = 0; i < num_queries; i++){
+               char *process_text = NULL;
+               int tam = queries[i].end - queries[i].start + 1;
+               process_text = (char *)malloc((tam + 1) * sizeof(char));
+               processQuery(&queries[i], text, process_text);
+               if(BMHS(process_text, tam, pattern, m)){
+                    printf("sim\n");
+               } else {
+                    printf("nao\n");
+               }
+               free(process_text);
+          }
      }
 
      gettimeofday(&fim, NULL);

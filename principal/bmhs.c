@@ -25,8 +25,10 @@ bool BMHS(char *text, int n, char *pattern, int m){
                j--;
           }
           if(j < 0){
-               printf("Casou: %d\n", (k+1));
+               return true;
           }
           i = i + d[(int)text[i]];
      }
+
+     return false;
 }
