@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-void preprocessShiftAnd(char *pattern, int m, unsigned long *M);
+void preprocessMasks(char *pattern, int m, unsigned long *M);
 
 bool shiftAndSearch(char *text, int n, char *pattern, int m);
 
