@@ -47,8 +47,6 @@ void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto){
 
 }
 
-// Não mexi a partir daqui
-
 ssize_t read_line(FILE *file, char **line, size_t *len) {
     ssize_t read;
     read = getline(line, len, file);
@@ -77,13 +75,13 @@ void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, in
     // Ler a primeira linha do arquivo (Texto Principal)
     read = read_line(file, &line, &len);
     if (read == 0) {
-        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        printf("Erro: arquivo vazio ou fim do arquivo inesperado.\n");
         exit(EXIT_FAILURE);
     }
-    // Alocar memória e copiar o texto principal
+
     *text = (char *)malloc((read + 1) * sizeof(char));
     if (*text == NULL) {
-        fprintf(stderr, "Erro ao alocar memória para o texto.\n");
+        printf("Erro ao alocar memória para o texto.\n");
         free(line);
         exit(EXIT_FAILURE);
     }
@@ -93,14 +91,14 @@ void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, in
     // Ler a segunda linha do arquivo (Padrão)
     read = read_line(file, &line, &len);
     if (read == 0) {
-        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        printf("Erro: arquivo vazio ou fim do arquivo inesperado.\n");
         free(*text);
         exit(EXIT_FAILURE);
     }
-    // Alocar memória e copiar o padrão
+
     *pattern = (char *)malloc((read + 1) * sizeof(char));
     if (*pattern == NULL) {
-        fprintf(stderr, "Erro ao alocar memória para o padrão.\n");
+        printf("Erro ao alocar memória para o padrão.\n");
         free(*text);
         free(line);
         exit(EXIT_FAILURE);
@@ -108,10 +106,10 @@ void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, in
     strncpy(*pattern, line, read);
     (*pattern)[read] = '\0';
 
-    // Ler a terceira linha do arquivo (Número de consultas)
+    // Ler a terceira linha do arquivo (Número de queries)
     read = read_line(file, &line, &len);
     if (read == 0) {
-        fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+        printf("Erro: arquivo vazio ou fim do arquivo inesperado.\n");
         free(*text);
         free(*pattern);
         free(line);
@@ -119,21 +117,20 @@ void leituraArquivo(FILE *file, char **text, char **pattern, Query **queries, in
     }
     *num_queries = atoi(line);
 
-    // Alocação dinâmica para as consultas
     *queries = (Query *)malloc(*num_queries * sizeof(Query));
     if (*queries == NULL) {
-        fprintf(stderr, "Erro ao alocar memória para as consultas.\n");
+        printf("Erro ao alocar memória para as consultas.\n");
         free(*text);
         free(*pattern);
         free(line);
         exit(EXIT_FAILURE);
     }
 
-    // Leitura dos intervalos de consultas
+    // Leitura dos intervalos das queries
     for (int i = 0; i < *num_queries; i++) {
         read = read_line(file, &line, &len);
         if (read == 0) {
-            fprintf(stderr, "Erro: arquivo vazio ou fim do arquivo inesperado.\n");
+            printf("Erro: arquivo vazio ou fim do arquivo inesperado.\n");
             free(*text);
             free(*pattern);
             free(*queries);
