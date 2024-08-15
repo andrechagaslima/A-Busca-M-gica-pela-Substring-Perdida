@@ -5,6 +5,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-bool BMHS(char *text, int n, char *pattern, int m);
+bool BMHS(char *texto, int tam_texto, char *padrao, int tam_padrao);
 
 #endif

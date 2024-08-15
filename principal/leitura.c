@@ -7,12 +7,11 @@
 //Verificar se os arquivos foram passados corretamente.
 void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 
-     //Verificar se a estratégia foi fornecida
      if(estrategia[0] != 'S' && estrategia[0] != 'B' || strlen(estrategia) > 1){
           printf("Selecione uma estratégia valida.\n");
           exit(EXIT_FAILURE);
      }
-     // Verificar se o arquivo de entrada foi fornecido
+   
      if (inputFile == NULL) {
           printf("O arquivo de entrada é necessário.\n");
           exit(EXIT_FAILURE);
@@ -20,7 +19,7 @@ void verificacaoArquivoEntrada(char *argv[], char* inputFile, char* estrategia){
 
 }
 
-// Função para imprimir dados de tempo de execução e distâncias calculadas em um arquivo de saída.
+// Função para imprimir dados de tempo de execução e os resultados.
 void imprimirSaidas(FILE *arquivoSaida, bool *resultado, int qte_restultados,
 double tempoUsuario, double tempoNoSistema){
 
@@ -28,9 +27,9 @@ double tempoUsuario, double tempoNoSistema){
      printf("Algoritmo ficou %.6lf segundos no sistema.\n", tempoNoSistema);
      
      for(int i=0; i<qte_restultados; i++){  
-          if(resultado[i] == 1){   
+          if(resultado[i] == true){   
                fprintf(arquivoSaida, "Sim\n");
-          } else if(resultado[i] == 0){
+          } else if(resultado[i] == false){
                fprintf(arquivoSaida, "Não\n");
           } else {
                fprintf(arquivoSaida, "Erro\n");
@@ -47,6 +46,8 @@ void testaAberturaArquivo(FILE* arquivo, char* arquivoAberto){
      }
 
 }
+
+// Não mexi a partir daqui
 
 ssize_t read_line(FILE *file, char **line, size_t *len) {
     ssize_t read;

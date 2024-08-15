@@ -16,8 +16,8 @@ int main(int argc, char *argv[]) {
      char *outputFile = "saida.txt";
      struct rusage start, end; //Usados para calcular o tempo (getrusage)
      struct timeval inicio, fim; //Usados para calcular o tempo (gettimeofday)
-     char *text = NULL;
-     char *pattern = NULL;
+     char *texto = NULL;
+     char *padrao = NULL;
      Query *queries = NULL;
      int num_queries;
 
@@ -31,12 +31,11 @@ int main(int argc, char *argv[]) {
      FILE *arquivo = fopen(inputFile, "r");
      testaAberturaArquivo(arquivo, inputFile);
 
-     leituraArquivo(arquivo, &text, &pattern, &queries, &num_queries);
+     leituraArquivo(arquivo, &texto, &padrao, &queries, &num_queries);
 
      bool *resultados = (bool *)malloc(num_queries * sizeof(bool));
 
-     size_t n = strlen(text) - 1;
-     size_t m = strlen(pattern) - 1;
+     size_t tam_padrao = strlen(padrao) - 1;
 
      // Abrir o arquivo de saída
      FILE *arquivoSaida = fopen(outputFile, "w");
@@ -47,14 +46,13 @@ int main(int argc, char *argv[]) {
 
      //Escolha do Algoritmo
      for(int i = 0; i < num_queries; i++){
-          char *process_text = NULL;
-          int tam = queries[i].end - queries[i].start + 1;
-          process_text = (char *)malloc((tam + 1) * sizeof(char));
-          processQuery(&queries[i], text, process_text);
+          int tam_texto = queries[i].end - queries[i].start + 1;
+          char *process_text = (char *)malloc((tam_texto + 1) * sizeof(char));
+          processQuery(&queries[i], texto, process_text);
           if(algoritmo[0] == 'S'){
-               resultados[i] = shiftAndSearch(process_text, tam, pattern, m);
+               resultados[i] = shiftAnd(process_text, tam_texto, padrao, tam_padrao);
           } else if(algoritmo[0] == 'B'){
-               resultados[i] = BMHS(process_text, tam, pattern, m);
+               resultados[i] = BMHS(process_text, tam_texto, padrao, tam_padrao);
           }
           free(process_text);
      }
@@ -72,8 +70,8 @@ int main(int argc, char *argv[]) {
      //Finalizações
 
      free(queries);
-     free(pattern);
-     free(text);
+     free(padrao);
+     free(texto);
      free(resultados);
      fclose(arquivo);
      fclose(arquivoSaida);

@@ -19,7 +19,7 @@ void preprocessMasks(char *pattern, int m, unsigned long **M, unsigned long numP
     }
 }
 
-bool shiftAndSearch(char *text, int n, char *pattern, int m) {
+bool shiftAnd(char *text, int n, char *pattern, int m) {
     if (m > n) {
         printf("Padrão muito longo para a query.\n");
         return false;

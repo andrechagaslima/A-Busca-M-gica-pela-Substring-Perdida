@@ -1,38 +1,38 @@
 #include "bmhs.h"
 #define MaxChar 256
 
-bool BMHS(char *text, int n, char *pattern, int m){
+bool BMHS(char *texto, int tam_texto, char *padrao, int tam_padrao){
 
      int i, j, k;
      int d[MaxChar];
 
      for(j = 0; j < MaxChar; j++){
-          d[j] = (m + 1);
+          d[j] = (tam_padrao + 1);
      }
-
-     for(j = 0; j < m; j++){
-          d[(int)pattern[j]] = (m - j);
+                                   
+     for(j = 0; j < tam_padrao; j++){            
+          d[(int)padrao[j]] = (tam_padrao - j);   // Pré-Processamento do padrão
      }
          
-     i = m;
+     i = tam_padrao;
 
-     while(i <= n){
+     while(i <= tam_texto){
           
           k = i - 1;
-          j = m - 1;
-          while((j >= 0) && (text[k] == pattern[j])){
+          j = tam_padrao - 1;
+          while((j >= 0) && (texto[k] == padrao[j])){
                k--;
                j--;
           }
           if(j < 0){
-               return true;
+               return true; // Padrão encontrado
           } 
-          if(i == n){ 
+          if(i == tam_texto){ 
                i++; 
           } else {
-               i = i + d[(int)text[i]];
+               i = i + d[(int)texto[i]]; // Faz o deslocamento adequado
           }
      }
 
-     return false;
+     return false;  // Padrão não encontrado
 }

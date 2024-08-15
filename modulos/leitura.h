@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-typedef struct {  //Struct para ganhar o início e o final de cada query
+typedef struct {  //Struct para receber o início e o final de cada query
     int start;
     int end;    
 } Query;
