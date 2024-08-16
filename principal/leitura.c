@@ -31,9 +31,7 @@ double tempoUsuario, double tempoNoSistema){
                fprintf(arquivoSaida, "Sim\n");
           } else if(resultado[i] == false){
                fprintf(arquivoSaida, "Não\n");
-          } else {
-               fprintf(arquivoSaida, "Erro\n");
-          }
+          } 
      }
 }
 
