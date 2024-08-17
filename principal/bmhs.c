@@ -4,7 +4,7 @@
 bool BMHS(char *texto, int tam_texto, char *padrao, int tam_padrao){
 
      int i, j, k;
-     int d[MaxChar];
+     int *d = (int *)malloc(MaxChar * sizeof(int));
 
      for(j = 0; j < MaxChar; j++){
           d[j] = (tam_padrao + 1);
@@ -25,6 +25,7 @@ bool BMHS(char *texto, int tam_texto, char *padrao, int tam_padrao){
                j--;
           }
           if(j < 0){
+               free(d);
                return true; // Padrão encontrado
           } 
           if(i == tam_texto){ 
@@ -34,5 +35,6 @@ bool BMHS(char *texto, int tam_texto, char *padrao, int tam_padrao){
           }
      }
 
+     free(d);
      return false;  // Padrão não encontrado
 }
